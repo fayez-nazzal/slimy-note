@@ -1,5 +1,5 @@
 import React from 'react'
-import { styled } from 'react-richmon'
+import { styled } from '@fayez-nazzal/react-richmon'
 
 interface ColorButtonProps {
   color: string

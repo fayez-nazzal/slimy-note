@@ -1,4 +1,4 @@
-import { styled } from 'react-richmon'
+import { styled } from '@fayez-nazzal/react-richmon'
 
 interface ColFlexProps {
   direction: string

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { BrowserRouter, Redirect, Route } from "react-router-dom";
 import { ReactComponent as Search } from "./search.svg";
-import { Richmon } from "react-richmon";
-import { styled } from "react-richmon";
+import { Richmon } from "@fayez-nazzal/react-richmon";
+import { styled } from "@fayez-nazzal/react-richmon";
 import "./styles.css";
 import NotebookItem from "./NotebookItem";
 import ColFlex from "./ColFlex";

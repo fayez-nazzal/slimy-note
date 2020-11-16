@@ -1,4 +1,4 @@
-import { styled } from 'react-richmon'
+import { styled } from '@fayez-nazzal/react-richmon'
 
 export default styled.div`
   border: #cccccc;
