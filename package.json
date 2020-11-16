@@ -1,0 +1,33 @@
+{
+  "name": "slimy-note",
+  "version": "1.0.0-alpha",
+  "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
+  "main": "server.js",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.4",
+    "express": "^4.17.1",
+    "http-errors": "^1.7.3",
+    "mongodb": "^3.4.1",
+    "mongoose": "^5.10.14",
+    "morgan": "^1.9.1",
+    "path": "^0.12.7",
+    "pug": "^2.0.4",
+    "react-share": "^3.0.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fayez-nazzal/slimy-note.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fayez-nazzal/slimy-note/issues"
+  },
+  "homepage": "https://github.com/fayez-nazzal/slimy-note#readme"
+}
