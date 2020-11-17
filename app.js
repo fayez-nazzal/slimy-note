@@ -39,6 +39,10 @@ app.use(express.static("./client/build"));
 
 app.set("view engine", "pug");
 
+app.get("/google8ff227a6c01cad34.html", (req, res) => {
+  res.sendFile(path.join(__dirname + "/google8ff227a6c01cad34.html"));
+});
+
 app.get("*", (req, res) => {
   res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
 });
