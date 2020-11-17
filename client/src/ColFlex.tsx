@@ -6,7 +6,8 @@ interface ColFlexProps {
   css?: string
   alignItemsCenter?: boolean
 }
-export default styled.div`
+
+export default styled.span`
   display: flex;
   flex-direction: ${(props: ColFlexProps) =>
     props.reverse ? props.direction + '-reverse' : props.direction};

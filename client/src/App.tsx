@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter, Redirect, Route } from "react-router-dom";
 import { ReactComponent as Search } from "./search.svg";
 import { Richmon } from "@fayez-nazzal/react-richmon";
@@ -37,23 +37,36 @@ const StyledLabel = styled.label`
   margin: ${(props: LabelProps) => (props.margin ? props.margin : "unset")};
 `;
 
-const App = () => {
-  const [notebooks, setNotebooks] = useState([
+type notebook = {
+  title: string,
+  active: boolean,
+  color: string,
+  notes: [
     {
-      title: "My Notebook",
-      active: true,
-      color: "#eeeeee",
-      notes: [
-        {
-          title: "Welcome!",
-          color: "#a2d5f2",
-          content: "<div></div>",
-        },
-      ],
+      title: string,
+      color: string,
+      content: string,
     },
-  ]);
+  ],
+}
+
+const App = () => {
+  const [notebooks, setNotebooks] = useState<notebook[]>([]);
+
   const [searchText, setSearchText] = useState("");
   const [activeNotebookIndex, setActiveNotebookIndex] = useState(0);
+
+  useEffect(()=>{
+    console.log("about to load data")
+    loadData()
+  }, [])
+
+  const loadData = async () => {
+    const response = await fetch(`https://slimy-note.azurewebsites.net/api/notebooks`, {credentials: 'include'})
+    const data = await response.json()
+    setNotebooks(data.notebooks)
+    console.log(data.notebooks)
+  }
 
   const activateNotebook = (index: number) => {
     const clonedNotebooks = [...notebooks];
@@ -110,7 +123,7 @@ const App = () => {
   return (
     <BrowserRouter>
       <ColFlex direction="row">
-        <ColFlex style={{ width: "230px" }} direction="column">
+        <ColFlex style={{ width: "300px" }} direction="column">
           <ColFlex
             direction="row"
             style={{
@@ -179,6 +192,7 @@ const App = () => {
               )
               .map((notebook, index) => (
                 <NotebookItem
+                  key={index}
                   color={notebook.color}
                   title={notebook.title}
                   index={index}
@@ -199,9 +213,10 @@ const App = () => {
             <Route
               exact
               path={`/${notebookIndex}/${noteIndex}`}
-              key={`route${noteIndex}`}
+              key={`route${noteIndex+2}`}
             >
               <Richmon
+                key={`richmon${noteIndex}`}
                 tools={[
                   "BIUS",
                   "thin-seperator",
@@ -220,10 +235,19 @@ const App = () => {
                 content={note.content}
                 onChange={(newContent: string) => {
                   const notebooksClone = [...notebooks];
+                  console.log(noteIndex)
                   notebooksClone[activeNotebookIndex].notes[
                     noteIndex
                   ].content = newContent;
                   setNotebooks([...notebooksClone]);
+                  fetch('https://slimy-note.azurewebsites.net/api/notebooks', {
+                      method: "PUT",
+                      body: JSON.stringify(notebooksClone),
+                      headers: {"Content-type": "application/json; charset=UTF-8"},
+                      credentials: 'include'
+                    })
+                    .then(response => response.json()) 
+                    .catch(err => console.log(err));
                 }}
                 toolbarCss="border-bottom: 1px solid #cccccc"
                 width="100%"
@@ -235,8 +259,8 @@ const App = () => {
         )}
         <Route>
           <Redirect
-            to={`/${activeNotebookIndex}/${
-              notebooks[activeNotebookIndex].notes.length - 1
+            to={`/0/${
+              0
             }`}
           />
         </Route>

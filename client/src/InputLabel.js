@@ -1,20 +1,20 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
-import { useHistory } from 'react-router-dom'
-import styled from 'styled-components'
-import ColFlex from './ColFlex'
-import ColoredButton from './ColoredButton'
+import React, { useLayoutEffect, useRef, useState } from "react";
+import { useHistory } from "react-router-dom";
+import styled from "styled-components";
+import ColFlex from "./ColFlex";
+import ColoredButton from "./ColoredButton";
 
-const StyledSpan = styled.span`
+const StyledSpan = styled.div`
   color: black;
   font-size: ${(props) => props.fontSize};
-  display: ${(props) => (props.shown ? 'inline-block' : 'none')};
+  display: ${(props) => (props.shown ? "inline-block" : "none")};
   max-width: 146px;
   white-space: nowrap;
   overflow: hidden !important;
   text-overflow: ellipsis;
   user-select: none;
   ${(props) => props.css}
-`
+`;
 
 const StyledInput = styled.input`
   border: #7eb2cd solid 1px;
@@ -27,56 +27,56 @@ const StyledInput = styled.input`
     outline: none;
   }
   width: 80%;
-  display: ${(props) => (props.shown ? 'unset' : 'none')};
+  display: ${(props) => (props.shown ? "unset" : "none")};
   text-align: center;
   ${(props) => props.css}
-`
+`;
 
-export default (props) => {
-  const [isInput, setIsInput] = useState(false)
-  const inputRef = useRef()
-  const [isNew, setIsNew] = useState(false)
+const InputLabel = (props) => {
+  const [isInput, setIsInput] = useState(false);
+  const inputRef = useRef();
+  const [isNew, setIsNew] = useState(false);
   const [activeColorIndex, setActiveColorIndex] = useState(
     props.colors.indexOf(props.activeColor)
-  )
-  const history = useHistory()
+  );
+  const history = useHistory();
 
   const onKeyDown = (e) => {
-    if (e.key === 'Enter') {
-      setIsInput(false)
-      setIsNew(false)
+    if (e.key === "Enter") {
+      setIsInput(false);
+      setIsNew(false);
       if (props.noteIndex !== undefined && props.notebookIndex !== undefined) {
-        history.push(`/${props.notebookIndex}/${props.noteIndex}`)
+        history.push(`/${props.notebookIndex}/${props.noteIndex}`);
       }
-      e.preventDefault()
-    } else if (e.key === 'Escape') {
-      alert('not implemented!!!')
-    } else if (e.key === 'ArrowLeft' && e.shiftKey) {
+      e.preventDefault();
+    } else if (e.key === "Escape") {
+      alert("not implemented!!!");
+    } else if (e.key === "ArrowLeft" && e.shiftKey) {
       const newActiveColorIndex =
         activeColorIndex - 1 > 0
           ? activeColorIndex - 1
-          : props.colors.length - 1
-      props.changeColor(props.colors[newActiveColorIndex])
-      setActiveColorIndex(newActiveColorIndex)
-      e.preventDefault()
-    } else if (e.key === 'ArrowRight' && e.shiftKey) {
-      const newActiveColorIndex = (activeColorIndex + 1) % props.colors.length
-      props.changeColor(props.colors[newActiveColorIndex])
-      setActiveColorIndex(newActiveColorIndex)
-      e.preventDefault()
+          : props.colors.length - 1;
+      props.changeColor(props.colors[newActiveColorIndex]);
+      setActiveColorIndex(newActiveColorIndex);
+      e.preventDefault();
+    } else if (e.key === "ArrowRight" && e.shiftKey) {
+      const newActiveColorIndex = (activeColorIndex + 1) % props.colors.length;
+      props.changeColor(props.colors[newActiveColorIndex]);
+      setActiveColorIndex(newActiveColorIndex);
+      e.preventDefault();
     }
-  }
+  };
 
   useLayoutEffect(() => {
-    if (props.name === 'new\u200b') {
-      props.changeName('')
-      setIsInput(true)
-      setIsNew(true)
+    if (props.name === "new\u200b") {
+      props.changeName("");
+      setIsInput(true);
+      setIsNew(true);
       setTimeout(() => {
-        inputRef.current.focus()
-      }, 10)
+        inputRef.current.focus();
+      }, 10);
     }
-  }, [props.name])
+  }, [props.name]);
 
   return (
     <React.Fragment>
@@ -85,12 +85,12 @@ export default (props) => {
         shown={!isInput}
         onClick={(e) => {
           if (e.detail === 2) {
-            setIsInput(true)
+            setIsInput(true);
             setTimeout(() => {
-              inputRef.current.focus()
-              inputRef.current.select()
-            }, 10)
-            e.preventDefault()
+              inputRef.current.focus();
+              inputRef.current.select();
+            }, 10);
+            e.preventDefault();
           }
         }}
         css={props.labelCss}
@@ -98,38 +98,38 @@ export default (props) => {
         {props.name}
       </StyledSpan>
       <ColFlex
-        direction='column'
-        css='background-color: transparent;align-items: center;'
+        direction="column"
+        css="background-color: transparent;align-items: center;"
       >
         <StyledInput
-          dir='auto'
+          dir="auto"
           fontSize={props.fontSize}
           ref={inputRef}
           value={props.name}
           onChange={(e) => {
-            props.changeName(e.target.value)
+            props.changeName(e.target.value);
           }}
           onBlur={() => {
-            setIsInput(false)
-            setIsNew(false)
+            setIsInput(false);
+            setIsNew(false);
           }}
           onKeyDown={onKeyDown}
           shown={isInput}
           css={props.inputCss}
         />
         <ColFlex
-          direction='row'
+          direction="row"
           css={`
             justify-content: space-evenly;
             background-color: transparent;
             width: 110px;
             margin: 0 auto;
-            display: ${isNew ? 'flex' : 'none'};
+            display: ${isNew ? "flex" : "none"};
           `}
         >
           {props.colors.map((color, index) => (
             <ColoredButton
-              key={index}
+              key={`cb${index}`}
               color={color}
               activeColor={props.colors[activeColorIndex]}
               changeColor={props.changeColor}
@@ -138,5 +138,7 @@ export default (props) => {
         </ColFlex>
       </ColFlex>
     </React.Fragment>
-  )
-}
+  );
+};
+
+export default InputLabel;
